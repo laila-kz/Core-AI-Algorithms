@@ -15,7 +15,7 @@ class ReLU:
         self.input = x
         return np.maximum(0, x)
     
-    def backword(self, grad_output):
+    def backward(self, grad_output):
         return grad_output * (self.input > 0)
     
 class Softmax:
@@ -24,7 +24,7 @@ class Softmax:
         self.output = exp_x / np.sum(exp_x, axis=1, keepdims=True)
         return self.output
     
-    def backword(self, grad_output):
+    def backward(self, grad_output):
         return grad_output
     
 class Sigmoid:
@@ -33,7 +33,7 @@ class Sigmoid:
         self.output = 1 /(1 + np.exp(-np.clip(x , -250 , 250)))
         return self.output
     
-    def backword(self, grad_output):
+    def backward(self, grad_output):
         return grad_output * self.output * (1 - self.output)
     
 
@@ -58,7 +58,7 @@ class CrossEntropyLoss:
 
         return loss
     
-    def backword(self):
+    def backward(self):
         #gradient of cross entropy with softmax
         return (self.softmax_preds - self.targets) / len(self.targets)
     
@@ -69,7 +69,7 @@ class MSELoss:
         self.targets = targets
         return np.mean((perdictions - targets) ** 2)
     
-    def backword(self):
+    def backward(self):
         return 2 * (self.predictions - self.targets) / len(self.targets)
     
 
@@ -86,7 +86,7 @@ class MSELoss:
 #update the kernels : kernel = kernel - learning_rate * gradient
 
 class Conv2D:
-    def _init_(self, in_channels, out_channels, kernel_size=3, stride=1, padding=0):
+    def __init__(self, in_channels, out_channels, kernel_size=3, stride=1, padding=0):
         self.in_channels = in_channels #the number of channels in the input image (e.g. 3 for RGB)
         self.out_channels = out_channels #the number of filters (kernels) we want to apply to the input image
         self.kernel_size = kernel_size #the size of the filter (e.g. 3 for a 3x3 filter)
@@ -242,7 +242,7 @@ class MaxPool2D:
 #it takes the output of the convolutional and pooling layers and flattens it into a 1D vector and applies a linear transformation to it
 
 class Linear :
-    def _init_(self, in_features , out_features):
+    def __init__(self, in_features , out_features):
         self.in_features = in_features 
         self.out_features = out_features
 
@@ -327,7 +327,7 @@ class CNN :
         predictions = self.forward(X)
         loss = self.loss_function.forward(predictions, y)
         self.loss_history.append(loss)                                                  
-        grad_loss = self.loss_function.backword()
+        grad_loss = self.loss_function.backward()
         self.backward(grad_loss)
 
         for layer in self.layers :

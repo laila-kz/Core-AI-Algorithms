@@ -66,7 +66,7 @@ class DecisionStump:
         predictions = np.ones(n_samples)
 
         feature_values = X[:, self.feature_index]
-        if self.polarit == 1:
+        if self.polarity == 1:
             predictions[feature_values < self.threshold] = -1
         else:
             predictions[feature_values > self.threshold] = -1
@@ -76,7 +76,7 @@ class DecisionStump:
 
 #ada boost class
 class AdaBoost:
-    def __init__(self, n_estimators =50):
+    def __init__(self, n_estimators=50):
         #n_estimators is the number of weak learners we want to use in our ensemble
         self.n_estimators = n_estimators
         self.models = []
@@ -94,15 +94,15 @@ class AdaBoost:
 
             predictions = stump.predict(X)
 
-            #compute the weigthed error 
+            #compute the weighted error 
             err = np.sum(w[predictions != y_])/ np.sum(w)
 
             #compute alpha (importance of this weak learner)
             alpha = 0.5 * np.log((1 - err) / (err + 1e-10)) #add small value to avoid division by zero
 
             #update sample weights
-            W = w* np.exp(- alpha * y_ * predictions)
-            W = W / np.sum(W) #normalize weights
+            w = w * np.exp(-alpha * y_ * predictions)
+            w = w / np.sum(w) #normalize weights
 
             self.models.append(stump)
             self.alpha.append(alpha)
@@ -116,7 +116,7 @@ class AdaBoost:
     def predict(self, X,  threshold =0 ):
         #make prediction using weighted sum of weak learners
 
-        predictions = np.zeros(X,shape[0])
+        predictions = np.zeros(X.shape[0])
 
         #weigthed sum of predictions from all weak learners
         for alpha , model in zip(self.alpha, self.models):

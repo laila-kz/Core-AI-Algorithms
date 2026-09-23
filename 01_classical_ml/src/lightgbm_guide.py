@@ -124,10 +124,8 @@ model_clf = lgb.LGBMClassifier(n_estimators = 1000)
 
 model_clf.fit(
     X_train_sub, y_train_sub, 
-    eval_set=[(X_val, y_val)],  #tells the model to keep watching the performance on the validation set during training
-    callbacks=[lgb.early_stopping(stopping_rounds=10)]  # Stop if no improvement for 10 rounds
-#if the performance on the validation set does not improve for 10 consecutive rounds, the training will stop
-    verbose=False
+    eval_set=[(X_val, y_val)],  # tells the model to keep watching the performance on the validation set during training
+    callbacks=[lgb.early_stopping(stopping_rounds=10, verbose=False)]  # Stop if no improvement for 10 rounds
 )
 
 

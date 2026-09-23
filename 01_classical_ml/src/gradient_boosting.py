@@ -7,7 +7,10 @@
 # repeats the process for a specified number of iterations, allowing the model to learn from its mistakes and improve its predictions over time.
 
 
-from Decision_tree import DecisionTree
+try:
+    from decision_tree import DecisionTree
+except ImportError:
+    from .decision_tree import DecisionTree
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -48,8 +51,8 @@ class GradientBoostingRegressor:
             residuals = y - current_predictions 
 
             #subsample if needed 
-            if self.subsample_rate < 1.0:
-                n_subsample = int(n_samples * self.subsample_rate)
+            if self.subsample < 1.0:
+                n_subsample = int(n_samples * self.subsample)
                 indices = np.random.choice(n_samples, n_subsample, replace=False)
                 X_subsample = X[indices]
                 residuals_subsample = residuals[indices]
@@ -99,7 +102,7 @@ class GradientBoostingRegressor:
 
 #Gradient boosting for classification
 class GradientBoostingClassifier:
-    def _init_(self , n_estimators=100 , learning_rate =0.1 , max_depth =3, min_samples_split =2 , subsample =1.0):
+    def __init__(self, n_estimators=100, learning_rate=0.1, max_depth=3, min_samples_split=2, subsample=1.0):
         self.n_estimators = n_estimators
         self.learning_rate = learning_rate
         self.max_depth = max_depth
@@ -145,10 +148,11 @@ class GradientBoostingClassifier:
         if X_val is not None:
             val_predictions = np.full(X_val.shape[0], self.initial_prediction)
         
-        print(f"\n🚀 Training Gradient Boosting Classifier")
-        print(f"Initial prediction (log odds): {self.initial_prediction:.4f}")
-        print(f"Initial probability: {self._sigmoid(self.initial_prediction):.4f}")
-        print("-" * 60)
+        if verbose:
+            print(f"\nTraining Gradient Boosting Classifier")
+            print(f"Initial prediction (log odds): {self.initial_prediction:.4f}")
+            print(f"Initial probability: {self.sigmoid(self.initial_prediction):.4f}")
+            print("-" * 60)
 
         for i in range(self.n_estimators):
             residuals = self.compute_residuals(y, current_predictions)
