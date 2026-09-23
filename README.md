@@ -98,7 +98,7 @@ Python · NumPy · pandas · scikit-learn · XGBoost · LightGBM · CatBoost · 
 
 **Leila Khezaz**: Final-year AI & Data Science engineering student at ENSA Safi, focused on Data Engineering and Analytics Engineering.
 
-[GitHub](https://github.com/laila-kz) · [LinkedIn](https://linkedin.com/in/leila-khezaz-a57779336) · leilakhezaz07@gmail.com
+[GitHub](https://github.com/laila-kz) · [LinkedIn](https://linkedin.com/in/leila-khezaz-a57779336) · 
 
 ## License
 
